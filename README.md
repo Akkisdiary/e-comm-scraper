@@ -1,2 +1,2 @@
 # e-comm-scraper
-Scrape prudcut data from e-commerce websites
+Scrape product data from e-commerce websites
