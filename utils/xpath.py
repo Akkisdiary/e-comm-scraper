@@ -1,13 +1,14 @@
 """Utility functions to extract data using xpath rules"""
 
-from typing import List, Union
-from lxml.etree import Element
+from typing import List, Union, Type
+
+from lxml.html import HtmlElement
 
 
 def extract(
-    element: Element,
+    element: Type[HtmlElement],
     xpath: Union[str, List[str]], 
-    index: int = 0
+    index: int = None
 ):
     if not isinstance(xpath, (list, tuple)):
         xpath = [xpath]
@@ -17,7 +18,7 @@ def extract(
     for path in xpath:
         results.extend(element.xpath(path))
 
-    if index:
+    if isinstance(index, int):
         try:
             return results[index]
         except IndexError as e:

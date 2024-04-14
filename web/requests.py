@@ -1,5 +1,5 @@
 """Wrapper around `requests` library for centralized control"""
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Type
 
 from requests import Response
 import requests as r
@@ -11,7 +11,7 @@ def request(
     *args: List[Any],
     max_retries: int = 0,
     **kwargs: Dict[str, Any],
-) -> Response:
+) -> Type[Response]:
     attempt = 0
     while attempt <= max_retries:
         attempt += 1
