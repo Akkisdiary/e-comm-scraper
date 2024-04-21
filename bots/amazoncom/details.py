@@ -78,9 +78,10 @@ def extract_product_details(html_content: str, url: str):
     result["title"] = xpath.extract(doc, constants.TITLE_PATHS, 0)
     result["brand"] = xpath.extract(doc, constants.BRAND_PATHS, 0)
     result["price"] = xpath.extract(doc, constants.PRICE_PATHS, 0)
-    result["list_price"] = xpath.extract(doc, constants.REGULAR_PRICE_PATHS, 0)
+    result["list_price"] = xpath.extract(doc, constants.LIST_PRICE_PATHS, 0)
     result["image"] = xpath.extract(doc, constants.IMAGE_PATHS, 0)
     result["sku"] = get_asin(doc, url)
+    result["url"] = url
 
     return result
 
@@ -98,7 +99,30 @@ def extract(urls: List[str]):
     return data
 
 
+def clean_whitespace(string: str):
+    if string is not None:
+        return re.compile(r"\s+").sub(" ", string).strip()
+
+
 def clean_and_transform(raw_data: List[Dict[str, Any]]):
+    def process_brand(brand: str):
+        if brand is None or len(str(brand)) == 0:
+            return
+
+        unwanted_strings = (
+            "Visit",
+            "-Store",
+            "Store",
+            " the ",
+            " a ",
+            " an ",
+        )
+        for text in unwanted_strings:
+            if text in brand:
+                brand = brand.replace(text, "")
+
+        return clean_whitespace(brand)
+
     schema = {
         "title": [],
         "brand": [],
@@ -106,13 +130,16 @@ def clean_and_transform(raw_data: List[Dict[str, Any]]):
         "list_price": [],
         "image": [],
         "sku": [],
+        "url": [],
     }
     for data in raw_data:
-        for key in schema.keys():
-            val = data.get(key)
-            if val is not None:
-                val=  str(val).strip()
-            schema[key].append(val)
+        schema["title"].append(clean_whitespace(data.get("title")))
+        schema["brand"].append(process_brand(data.get("brand")))
+        schema["price"].append(data.get("price"))
+        schema["list_price"].append(data.get("list_price"))
+        schema["image"].append(data.get("image"))
+        schema["sku"].append(data.get("sku"))
+        schema["url"].append(data.get("url"))
 
     return schema
 
@@ -126,7 +153,7 @@ def main(urls: List[str]):
     final = clean_and_transform(raw)
 
     file_name = f"amazoncom-details-{datetime.now().isoformat(timespec='seconds')}"
-    export.to_csv(final, file_name)
+    export.to_csv(final, f"bots/amazoncom/output/{file_name}")
 
 
 if __name__ == "__main__":

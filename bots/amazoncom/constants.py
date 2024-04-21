@@ -106,7 +106,7 @@ SELLER_NAME_PATHS = [
 ]
 
 
-REGULAR_PRICE_PATHS = (
+LIST_PRICE_PATHS = (
     '//span[contains(@id, "listPriceValue")]/text()',
     '//td[contains(text(), "List Price")]'
     '/following-sibling::td[contains(@class, "a-text-strike")]/text()',
