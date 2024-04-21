@@ -16,12 +16,15 @@ def add_csv_extension(file_path: str):
     return f"{base}.csv"
 
 
-def to_csv(data, file_name: str = None):
+def to_csv(data, file_name: str = None, verbose: bool = True):
     if file_name is None:
         file_name = datetime.now().isoformat(timespec='seconds')
 
     abs_file_path = os.path.join(PROJECT_BASE, file_name)
     file_path = add_csv_extension(abs_file_path)
-    
+
+    if verbose:
+        print(f"Exporting to file: {file_path}")
+
     df = pd.DataFrame(data)
     df.to_csv(file_path, index=False)

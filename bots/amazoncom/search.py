@@ -119,7 +119,6 @@ def main(search_term: str):
     final = clean_and_transform(raw)
 
     file_name = f"amazoncom-search-{search_term}-{datetime.now().isoformat(timespec='seconds')}"
-    print(f"Exporting to file: {file_name}...")
     export.to_csv(final, file_name)
 
 

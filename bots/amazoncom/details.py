@@ -118,7 +118,7 @@ def clean_and_transform(raw_data: List[Dict[str, Any]]):
 
 
 def main(urls: List[str]):
-    print(f"Reading csv: '{filepath}'")
+    print(f"Reading csv: {filepath}")
     urls = read_urls_from_csv(filepath)
 
     print(f"Extrating product information ({len(urls)} urls)")
@@ -126,7 +126,6 @@ def main(urls: List[str]):
     final = clean_and_transform(raw)
 
     file_name = f"amazoncom-details-{datetime.now().isoformat(timespec='seconds')}"
-    print(f"Exporting to file: {file_name}")
     export.to_csv(final, file_name)
 
 
