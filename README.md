@@ -19,6 +19,6 @@ This project is a web scraping tool developed in Python to extract product data 
   ```
 3. Run the scraper to extract search results:
   ```.sh
-  PYTHONPATH=. amazoncom/search.py shoes
+  PYTHONPATH=. python bots/amazoncom/search.py shoes
   ```
 > Replace "shoes" with your desired search query. The scraped data will be saved to a `csv` file in the same folder

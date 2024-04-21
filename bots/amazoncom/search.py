@@ -103,19 +103,17 @@ def clean_and_transform(data: List[Dict[str, str]]):
     return df
 
 
-
-if __name__ == "__main__":
-    if len(sys.argv) == 1:
-        raise ValueError("Please enter a search term")
-    
-    search_term = sys.argv[1]
-    print(f"Searching for '{search_term}'...")
-
+def extract(search_term: str):
     response = get_search_response(search_term)
     validate_response(response)
 
-    print("Extracting search results...")
     raw = extract_search_results(response.text)
+    return raw
+
+
+def main(search_term: str):
+    print(f"Searching for '{search_term}'...")
+    raw = extract(search_term)
 
     print("Transforming & cleaning the data...")
     final = clean_and_transform(raw)
@@ -123,3 +121,12 @@ if __name__ == "__main__":
     file_name = f"amazoncom-search-{search_term}-{datetime.now().isoformat(timespec='seconds')}"
     print(f"Exporting to file: {file_name}...")
     export.to_csv(final, file_name)
+
+
+if __name__ == "__main__":
+    if len(sys.argv) == 1:
+        raise ValueError("Please enter a search term")
+    
+    search_term = sys.argv[1]
+    main(search_term)
+    print("===COMPLETE===")

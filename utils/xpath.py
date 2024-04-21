@@ -1,6 +1,6 @@
 """Utility functions to extract data using xpath rules"""
 
-from typing import List, Union, Type
+from typing import List, Optional, Union, Type
 
 from lxml.html import HtmlElement
 
@@ -8,7 +8,7 @@ from lxml.html import HtmlElement
 def extract(
     element: Type[HtmlElement],
     xpath: Union[str, List[str]], 
-    index: int = None
+    index: Optional[int] = None
 ):
     if not isinstance(xpath, (list, tuple)):
         xpath = [xpath]
