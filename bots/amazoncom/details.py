@@ -153,7 +153,7 @@ def main(urls: List[str]):
     final = clean_and_transform(raw)
 
     file_name = f"amazoncom-details-{datetime.now().isoformat(timespec='seconds')}"
-    export.to_csv(final, f"bots/amazoncom/output/{file_name}")
+    export.to_csv(final, file_name)
 
 
 if __name__ == "__main__":
